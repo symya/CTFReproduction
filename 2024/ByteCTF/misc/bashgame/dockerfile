@@ -1,0 +1,54 @@
+FROM golang:1.20 as builder
+
+ENV GOPROXY=https://goproxy.cn,direct
+
+RUN groupadd -r ctf && useradd -r -g ctf ctf
+
+RUN apt-get update && apt-get install -y sudo
+
+RUN echo "ctf ALL=(ALL) NOPASSWD: /opt/challenge/truegame.sh" >> /etc/sudoers
+
+RUN mkdir -p /home/ctf/.cache && chown -R ctf:ctf /home/ctf
+
+WORKDIR /opt/challenge
+
+COPY ctf.sh ./
+COPY ops.sh ./
+COPY truegame.sh ./
+COPY flag ./
+
+# 更改文件权限
+RUN chmod 777 /opt/challenge/ctf.sh
+RUN chmod 777 /opt/challenge/ops.sh
+RUN chmod 755 /opt/challenge/truegame.sh
+RUN chmod 700 /opt/challenge/flag
+
+# 更改文件和目录的所有者
+RUN chown -R ctf:ctf /opt/challenge
+RUN chown root:root /opt/challenge/truegame.sh
+RUN chown root:root /opt/challenge/flag
+
+#目录2
+WORKDIR /app
+RUN mkdir -p /app && chown -R ctf:ctf /app
+COPY lib/cmd /app/lib/cmd
+COPY go.* ./
+RUN go mod download
+# 清理和更新go.mod
+RUN go mod tidy
+RUN go get github.com/gin-gonic/gin  # 添加缺失的依赖
+RUN go get  ByteCTF/lib/cmd
+RUN chmod 777 /app/lib/cmd
+COPY main.go /app/
+RUN chmod 644 /app/go.mod
+RUN chmod 664 /app/main.go
+RUN chown ctf:ctf /app/main.go
+
+# 创建start.sh脚本
+RUN echo '#!/bin/bash' > /start.sh && \
+    echo 'rm -f /opt/challenge/Dockerfile' >> /start.sh && \
+    chmod +x /start.sh
+
+USER ctf
+ENTRYPOINT /start.sh && go run main.go
+EXPOSE 23333
