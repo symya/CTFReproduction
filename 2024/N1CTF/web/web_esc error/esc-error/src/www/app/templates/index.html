@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="./static/index.css" rel="stylesheet">
+</head>
+<body>
+    <label>
+        <input type="checkbox" id="test_mod" class="nes-checkbox" onclick="toggleCodeInput()">
+        <span>Test Mode</span>
+    </label>
+
+    <label>
+        <span>hash:"{{hash}}"</span>
+        <span>suffer:"{{suffer}}"</span>
+    </label>
+
+    <section id="top-section">
+        hash = sha256(suffer + code)
+    </section>
+
+    <section class="nes-container is-light with-title">
+        <p class="title">Update</p>
+        <div class="nes-field">
+            <label for="update_username">Username</label>
+            <input type="text" id="update_username" class="nes-input" placeholder="Enter username">
+        </div>
+        <div class="nes-field">
+            <label for="update_email">Email</label>
+            <input type="email" id="update_email" class="nes-input" placeholder="Enter email">
+        </div>
+        <div class="nes-field">
+            <label for="update_code">Code</label>
+            <input type="text" id="update_code" class="nes-input" placeholder="Enter code">
+        </div>
+        <button class="nes-btn is-primary" onclick="handleUpdate()">Submit Update</button>
+    </section>
+
+    <section class="nes-container is-light with-title">
+        <p class="title">Dump</p>
+        <div class="nes-field">
+            <label for="dump_username">Username</label>
+            <input type="text" id="dump_username" class="nes-input" placeholder="Enter username">
+        </div>
+        <div class="nes-field">
+            <label for="dump_path">Path</label>
+            <input type="text" id="dump_path" class="nes-input" placeholder="Enter path">
+        </div>
+        <div class="nes-field">
+            <label for="dump_code">Code</label>
+            <input type="text" id="dump_code" class="nes-input" placeholder="Enter code">
+        </div>
+        <button class="nes-btn is-primary" onclick="handleDump()">Submit Dump</button>
+    </section>
+    <script src="./static/index.js"></script>
+</body>
+</html>

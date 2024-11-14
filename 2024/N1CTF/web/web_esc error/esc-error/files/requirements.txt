@@ -1,0 +1,5 @@
+supervisor==4.2.5
+flask==3.0.3
+mysqlclient==2.2.4
+Flask-MySQLdb==2.0.0
+ujson==5.0.0
